@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "aa550737bc60d6cd7da7e01841d09f613efeefdb8d025721fdc8bdff25c13d04"
+            "sha256": "8b8a4004054525c2a1fc82c33778a5020fbaece51a96b064534b68df13eb8493"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -55,6 +55,10 @@
             ],
             "markers": "python_version ~= '3.7'",
             "version": "==5.3.0"
+        },
+        "cb-django-signature": {
+            "editable": true,
+            "path": "./modules/django_signature"
         },
         "cb-firebase-push-notifications": {
             "editable": true,
