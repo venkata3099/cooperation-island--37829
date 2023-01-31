@@ -1091,6 +1091,9 @@
 "@modules/privacy-policy-webview@file:./modules/privacy-policy-webview":
   version "1.0.0"
 
+"@modules/privacy-policy-webview@file:./modules/privacy-policy-webview/":
+  version "1.0.0"
+
 "@modules/terms-and-conditions@file:./modules/terms-and-conditions":
   version "1.0.1"
   dependencies:
