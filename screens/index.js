@@ -3,292 +3,230 @@ import {
   Text,
   View,
   StyleSheet,
-  FlatList,
-  TextInput,
   Pressable,
-  Image
+  TextInput,
+  Image,
+  ScrollView
 } from "react-native";
 
-const ExploreList = () => {
-  const [search, setSearch] = useState("");
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [data, setData] = useState([]);
-  const [related, setRelated] = useState([]);
-  const [favourites, setFavourites] = useState([]);
+const Feedback = () => {
+  const [message, setMessage] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [expanded, setExpanded] = useState(null);
   useEffect(() => {
-    setData([
+    setReviews([
       {
         id: 1,
-        title: "Stays",
-        location: "New York, USA",
-        views: 48,
-        image: require("./assets/eventImage-lg.png")
+        username: "Username",
+        email: "username@email.com",
+        image: require("./assets/userImage.png"),
+        subject: "Molestie vestibulum nulla.",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, commodo lacus, amet nulla faucibus vulputate erat vestibulum. Aliquet consequat nunc sit ullamcorper vel egestas nunc sagittis lectus. Sed ipsum vel in morbi non semper adipiscing nibh nam. Integer sem."
       },
       {
         id: 2,
-        title: "Experiences",
-        location: "New York, USA",
-        views: 48,
-        image: require("./assets/eventImage-lg.png")
+        username: "Username",
+        email: "username@email.com",
+        image: require("./assets/userImage.png"),
+        subject: "Molestie vestibulum nulla.",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, commodo lacus, amet nulla faucibus vulputate erat vestibulum. Aliquet consequat nunc sit ullamcorper vel egestas nunc sagittis lectus. Sed ipsum vel in morbi non semper adipiscing nibh nam. Integer sem."
       },
       {
         id: 3,
-        title: "Hotels",
-        location: "New York, USA",
-        views: 48,
-        image: require("./assets/eventImage-lg.png")
-      }
-    ]);
-    setRelated([
-      {
-        id: 1,
-        title: "Iceland",
-        rating: 4.7,
+        username: "Username",
+        email: "username@email.com",
+        image: require("./assets/userImage.png"),
+        subject: "Molestie vestibulum nulla.",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eros sed leo, ultrices pellentesque nibh neque. Sed tempus ut mi a. Turpis.",
-        image: require("./assets/relatedImage1.png")
-      },
-      {
-        id: 2,
-        title: "Cuba",
-        rating: 4.7,
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eros sed leo, ultrices pellentesque nibh neque. Sed tempus ut mi a. Turpis.",
-        image: require("./assets/relatedImage2.png")
-      },
-      {
-        id: 3,
-        title: "America",
-        rating: 4.7,
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eros sed leo, ultrices pellentesque nibh neque. Sed tempus ut mi a. Turpis.",
-        image: require("./assets/relatedImage1.png")
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, commodo lacus, amet nulla faucibus vulputate erat vestibulum. Aliquet consequat nunc sit ullamcorper vel egestas nunc sagittis lectus. Sed ipsum vel in morbi non semper adipiscing nibh nam. Integer sem."
       },
       {
         id: 4,
-        title: "America",
-        rating: 4.7,
+        username: "Username",
+        email: "username@email.com",
+        image: require("./assets/userImage.png"),
+        subject: "Molestie vestibulum nulla.",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eros sed leo, ultrices pellentesque nibh neque. Sed tempus ut mi a. Turpis.",
-        image: require("./assets/relatedImage2.png")
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pretium, commodo lacus, amet nulla faucibus vulputate erat vestibulum. Aliquet consequat nunc sit ullamcorper vel egestas nunc sagittis lectus. Sed ipsum vel in morbi non semper adipiscing nibh nam. Integer sem."
       }
     ]);
   }, []);
-  const handleSelectFavourite = item => {
-    if (favourites.includes(item)) {
-      setFavourites(favourites.filter(fav => fav !== item));
+  useEffect(() => {
+    setExpanded(reviews[3]);
+  }, [reviews]);
+  const handleExpand = item => {
+    if (expanded === item) {
+      setExpanded(null);
     } else {
-      setFavourites([...favourites, item]);
+      setExpanded(item);
     }
   };
-
   return (
     <View style={styles.container}>
-      <FlatList
-        style={styles.list}
-        ListHeaderComponent={() => (
-          <View>
-            <Input
-              text="Search"
-              value={search}
-              onChange={text => setSearch(text)}
-              containerStyle={styles.inputContainer}
+      <ScrollView>
+        <TabView
+          tabTitles={["All Users"]}
+          selected={0}
+          style={styles.tabView}
+        />
+        <Text style={styles.title}>Feedback</Text>
+        <View style={styles.feedbackContainer}>
+          {reviews.map((review, index) => (
+            <Review
+              key={index}
+              item={review}
+              expanded={review === expanded}
+              onPress={x => {
+                handleExpand(x);
+              }}
             />
-            <TabView
-              tabTitles={["Dates", "Guests", "Filters"]}
-              selected={selectedTab}
-              onPress={index => setSelectedTab(index)}
-              tabColor="#F0F2F7"
-              backgroundColor="#fff"
-              style={styles.tabView}
-            />
-            <FlatList
-              data={data}
-              renderItem={({ item }) => <ExploreItem event={item} />}
-              keyExtractor={item => item.id.toString()}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            />
-            <View style={styles.listHeader}>
-              <Text style={styles.heading}>Top-related experiences</Text>
-              <Text style={styles.subHeading}>
-                Book activities led by local hosts on your next trip
-              </Text>
-            </View>
-          </View>
-        )}
-        data={related}
-        renderItem={({ item }) => (
-          <RelatedItem
-            event={item}
-            isFav={favourites.includes(item)}
-            onPress={x => handleSelectFavourite(x)}
+          ))}
+        </View>
+      </ScrollView>
+      <View style={styles.footer}>
+        <View style={styles.camera}>
+          <Image
+            source={require("./assets/cameraIcon.png")}
+            style={styles.cameraIcon}
           />
-        )}
-        keyExtractor={item => item.id.toString()}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
-      />
-      <Footer
-        images={[
-          require("./assets/homeIconActive.png"),
-          require("./assets/starIcon.png"),
-          require("./assets/taskIcon.png"),
-          require("./assets/mapIcon.png")
-        ]}
-        titles={["Home", "Spnsors", "Tasks", "Map"]}
-        active={0}
-        activeColor="#7C7C7C"
-      />
-    </View>
-  );
-};
-
-const RelatedItem = ({ event, isFav, onPress }) => {
-  return (
-    <View style={relatedItemStyles.container}>
-      <Image source={event.image} style={relatedItemStyles.image} />
-      <View style={relatedItemStyles.title}>
-        <Text style={relatedItemStyles.titleText}>{event.title}</Text>
-        <View style={relatedItemStyles.rating}>
-          <Text style={relatedItemStyles.ratingText}>{event.rating}</Text>
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type a message"
+            onChangeText={text => setMessage(text)}
+            value={message}
+            autoCorrect={false}
+            autoCapitalize="none"
+            autoFocus={false}
+          />
+          <Image
+            source={require("./assets/emojiIcon.png")}
+            style={styles.smileyIcon}
+          />
+          <Image
+            source={require("./assets/voiceIcon.png")}
+            style={styles.voiceIcon}
+          />
+        </View>
+        <View style={styles.send}>
+          <Image
+            source={require("./assets/sendIcon.png")}
+            style={styles.sendIcon}
+          />
         </View>
       </View>
-      <Text style={relatedItemStyles.description}>{event.description}</Text>
-      <Pressable
-        style={relatedItemStyles.favIconContainer}
-        onPress={() => onPress(event)}>
-        <Image
-          source={
-            isFav
-              ? require("./assets/isFavIcon.png")
-              : require("./assets/favIcon.png")
-          }
-          style={relatedItemStyles.favIcon}
-        />
-      </Pressable>
     </View>
   );
 };
 
-const relatedItemStyles = StyleSheet.create({
+const Review = ({ item, expanded, onPress }) => {
+  return (
+    <Pressable style={reviewStyles.container} onPress={() => onPress(item)}>
+      <View style={reviewStyles.header}>
+        <Image source={item.image} style={reviewStyles.image} />
+        <View style={reviewStyles.info}>
+          <Text style={reviewStyles.username}>{item.username}</Text>
+          <Text style={reviewStyles.email}>{item.email}</Text>
+        </View>
+        <Image
+          source={require("./assets/menuIcon.png")}
+          style={reviewStyles.menuIcon}
+        />
+      </View>
+      {expanded
+        ? (
+        <View style={reviewStyles.body}>
+          <Text style={reviewStyles.detailsText}>
+            <Text style={reviewStyles.green}>Email: {"\t"}</Text>
+            {"\t"}
+            {item.email}
+          </Text>
+          <Text style={reviewStyles.detailsText}>
+            <Text style={reviewStyles.green}>Subject: </Text>
+            {"\t"}
+            {item.subject}
+          </Text>
+          <Text style={reviewStyles.description}>{item.description}</Text>
+          <Pressable style={reviewStyles.btn}>
+            <Text style={reviewStyles.btnText}>Reply</Text>
+          </Pressable>
+        </View>
+          )
+        : null}
+    </Pressable>
+  );
+};
+
+const reviewStyles = StyleSheet.create({
   container: {
-    width: 170,
-    overflow: "hidden",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: "#f1f1f1",
     borderRadius: 10,
-    marginVertical: 10
+    marginHorizontal: 20,
+    marginBottom: 10
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   image: {
-    height: 170,
-    width: 170
+    width: 50,
+    height: 50,
+    borderRadius: 25
   },
-  title: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 10
-  },
-  titleText: {
-    fontSize: 14,
-    color: "#000",
-    fontWeight: "bold"
-  },
-  rating: {
-    backgroundColor: "#FFD500",
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    borderRadius: 10
-  },
-  ratingText: {
-    fontSize: 12,
-    color: "#000"
-  },
-  description: {
-    fontSize: 12,
-    color: "#7C7C7C",
-    marginLeft: 10
-  },
-  favIconContainer: {
-    position: "absolute",
-    top: 10,
-    right: 10,
+  menuIcon: {
     width: 20,
     height: 20
   },
-  favIcon: {
-    width: 20,
-    height: 20,
-    resizeMode: "contain"
-  }
-});
-const ExploreItem = ({ event }) => {
-  return (
-    <View style={exploreItemStyles.container}>
-      <Image source={event.image} style={exploreItemStyles.image} />
-      <View style={exploreItemStyles.content}>
-        <Text style={exploreItemStyles.title}>{event.title}</Text>
-        <Text style={exploreItemStyles.location}>{event.location}</Text>
-        <View style={exploreItemStyles.details}>
-          <Image
-            source={require("./assets/usersJoined.png")}
-            style={exploreItemStyles.icon}
-          />
-          <Text style={exploreItemStyles.detailsText}>
-            {event.views} Viewed
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
-};
-
-const exploreItemStyles = StyleSheet.create({
-  container: {
-    width: 220,
-    height: 250,
+  username: {
+    fontSize: 14
+  },
+  email: {
+    fontSize: 12
+  },
+  info: {
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginHorizontal: 10,
-    elevation: 5,
-    marginVertical: 10,
-    shadowColor: "rgba(0,0,0,0.5)",
-    backgroundColor: "#fff",
-    overflow: "hidden",
-    borderRadius: 10
+    height: 40
   },
-  image: {
-    width: "100%",
-    height: 150,
-    resizeMode: "contain",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
-  },
-  content: {
-    paddingLeft: 10
-  },
-  title: {
-    fontSize: 14,
-    color: "#000",
-    fontWeight: "bold",
-    marginBottom: 5
-  },
-  location: {
-    fontSize: 12,
-    color: "#B6B6B6",
-    marginBottom: 10
-  },
-  details: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  icon: {
-    height: 20,
-    width: 50,
-    resizeMode: "contain",
-    marginRight: 10
+  body: {
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#ccc"
   },
   detailsText: {
+    marginBottom: 5
+  },
+  green: {
+    color: "#12D790"
+  },
+  description: {
     fontSize: 12,
-    color: "#27AE60"
+    marginTop: 5,
+    textAlign: "justify"
+  },
+  btn: {
+    backgroundColor: "#000",
+    width: 60,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    marginVertical: 5,
+    alignSelf: "flex-end"
+  },
+  btnText: {
+    color: "#fff",
+    fontSize: 12
   }
 });
 
@@ -297,193 +235,47 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff"
   },
-  inputContainer: {
-    paddingHorizontal: 10,
-    marginTop: 10
-  },
-  list: {
-    flex: 1,
-    marginBottom: 60
-  },
   tabView: {
-    marginLeft: 10
+    width: 150,
+    marginLeft: 20,
+    marginVertical: 10
   },
-  listHeader: {
-    marginVertical: 10,
-    paddingHorizontal: 10
+  title: {
+    marginLeft: 20,
+    marginBottom: 10,
+    marginTop: 20
   },
-  heading: {
-    fontSize: 24,
-    color: "#22292E",
-    lineHeight: 40
-  },
-  subHeading: {
-    fontSize: 14,
-    color: "#8A8A8E"
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
-    paddingHorizontal: 10
-  }
-});
-
-export default ExploreList;
-
-const Footer = props => {
-  const generator = props.hideTitle ? props.images : props.titles;
-  const bgColor = {
-    backgroundColor: props.backgroundColor ? props.backgroundColor : "#C4C4C4"
-  };
-  const titleColor = {
-    color: props.titleColor ? props.titleColor : "#fff"
-  };
-  const activeColor = {
-    color: props.activeColor ? props.activeColor : "#000"
-  };
-  return (
-    <View style={[footerStyles.footer, bgColor]}>
-      {generator.map((title, index) => (
-        <View style={footerStyles.footerItem} key={index}>
-          <Image
-            style={footerStyles.footerImage}
-            source={props.images[index]}
-          />
-          {props.hideTitle
-            ? null
-            : (
-            <Text
-              style={[
-                titleColor,
-                footerStyles.footerItemText,
-                index === props.active ? activeColor : null
-              ]}>
-              {title}
-            </Text>
-              )}
-        </View>
-      ))}
-    </View>
-  );
-};
-
-const footerStyles = StyleSheet.create({
   footer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 60,
-    backgroundColor: "#C4C4C4",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20
+    padding: 10,
+    margin: 10
   },
-  footerItem: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%"
+  inputContainer: {
+    width: "80%"
   },
-  footerItemText: {
-    fontSize: 13,
-    color: "#fff",
-    marginTop: 5
+  input: {
+    paddingLeft: 15,
+    borderRadius: 10,
+    backgroundColor: "#F1F1F1",
+    height: 45
   },
-  footerImage: {
-    width: 20,
-    height: 20,
-    resizeMode: "contain"
+  smileyIcon: {
+    position: "absolute",
+    right: 40,
+    top: 10,
+    opacity: 0.5
+  },
+  voiceIcon: {
+    top: 12,
+    right: 15,
+    position: "absolute",
+    opacity: 0.5
   }
 });
 
-const Input = props => {
-  return (
-    <View style={[inputStyles.inputContainer, props.containerStyle]}>
-      {props.text
-        ? (
-        <Text style={inputStyles.inputText}>{props.text}</Text>
-          )
-        : null}
-
-      <TextInput
-        style={[
-          inputStyles.input,
-          props.style,
-          props.textArea ? inputStyles.textArea : null
-        ]}
-        placeholder={props.placeholder ? props.placeholder : "Enter"}
-        value={props.value}
-        onChangeText={text => props.onChange(text)}
-        placeholderTextColor={
-          props.placeholderTextColor ? props.placeholderTextColor : "#9B9B9B"
-        }
-        editable={props.editable !== false}
-        autoCapitalize="none"
-        autoCorrect={false}
-        multiline={!!props.textArea}
-      />
-      {props.errorText
-        ? (
-        <Text style={inputStyles.error}>{props.errorText}</Text>
-          )
-        : null}
-      {props.icon
-        ? (
-        <Image
-          source={props.icon}
-          style={
-            props.text ? inputStyles.iconWithText : inputStyles.iconWithoutText
-          }
-        />
-          )
-        : null}
-      <View style={styles.children}>{props.children}</View>
-    </View>
-  );
-};
-
-const inputStyles = StyleSheet.create({
-  inputContainer: {
-    flexDirection: "column",
-    justifyContent: "center"
-    // flex: 1
-  },
-  inputText: {
-    fontSize: 14,
-    marginLeft: 20,
-    color: "#111112"
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#e6e6e6",
-    borderRadius: 10,
-    padding: 10,
-    paddingLeft: 20,
-    marginVertical: 10,
-    width: "100%",
-    height: 50
-  },
-  iconWithText: {
-    position: "absolute",
-    right: 30,
-    top: 48,
-    width: 15,
-    height: 15,
-    resizeMode: "contain"
-  },
-  iconWithoutText: {
-    position: "absolute",
-    right: 30,
-    top: 28,
-    width: 15,
-    height: 15,
-    resizeMode: "contain"
-  },
-  textArea: {
-    height: 150
-  },
-  children: {}
-});
+export default Feedback;
 
 const TabView = ({
   tabTitles,
@@ -505,7 +297,7 @@ const TabView = ({
       style={[tabViewStyles.paletteContainer, backgroundColorStyle, propStyle]}>
       {tabTitles.map((title, index) => (
         <Pressable
-          onPress={() => onPress(index)}
+          onPress={() => (onPress ? onPress(index) : null)}
           style={
             index === selected
               ? [tabViewStyles.selected, tabColorStyle]
