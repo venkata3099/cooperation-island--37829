@@ -1,104 +1,100 @@
-import * as React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableHighlight
-} from "react-native";
+import React from "react";
+import { Text, StyleSheet, View, TouchableHighlight, Image, ScrollView } from "react-native";
 
-const pressed = () => {
-  console.log("pressed");
-};
-
-const ForgotPassword = () => {
+const DocumentsDetails = (params) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.topHead}>
-        <Text style={styles.mainHeading}>Forgot {"\n"} password</Text>
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Image source={require(
+          // @ts-ignore
+          "./assets/back.png")} style={styles.back} />
+        <Text style={styles.heading}>Details</Text>
+        <Text />
       </View>
+      <Text style={styles.mr10}>Document ID</Text>
+        <View style={styles.InputBox}>
+          <Text >#21292923</Text>
+        </View>
+        <Text style={styles.mr10}>Document Title</Text>
+        <View style={styles.InputBox}>
+          <Text >Title of the document</Text>
+        </View>
+        <View style={styles.descriptionContainer}>
+        <Text style={styles.descriptionText}>Content</Text>
+        <Text style={styles.description}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa faucibus nisi egestas quis etiam nec feugiat. Scelerisque pellentesque at in accumsan cras tristique at id. </Text>
+        <Text style={styles.description}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa faucibus nisi egestas quis etiam nec feugiat. Scelerisque pellentesque at in accumsan cras tristique at id. At nullam lectus sapien nulla. At egestas cursus elit, tortor mattis gravida ornare proin ipsum. Duis purus turpis libero tristique dignissim.
+        </Text>
+        <Text style={styles.description}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa faucibus nisi egestas quis etiam nec feugiat. Scelerisque pellentesque at in accumsan cras tristique at id. At nullam lectus sapien nulla. At egestas cursus elit, tortor mattis gravida ornare proin ipsum. Duis purus turpis libero tristique dignissim.
+        </Text>
+      </View>
+      <Text style={styles.mr10}>Download</Text>
+      <View style={styles.chooseContainer}>
+        <Text>Download file</Text>
+        <Image source={require(
+          // @ts-ignore
+          "./assets/upload.png")} style={styles.filterImg} />
+      </View>
+        <View style={styles.buttonBottom}>
+          <Button>Sign</Button>
+      </View>
+    </ScrollView>
 
-      <View style={styles.inputSection}>
-        <View style={styles.newPassword}>
-          <Text style={styles.newPassword}>
-            Set new password for your account.
-          </Text>
-        </View>
-        <View style={styles.passwordInput}>
-          <Text style={styles.newPasswordLabel}>Password</Text>
-          <Input placeholder="Enter"></Input>
-        </View>
-        <View style={styles.confirmInput}>
-          <Text style={styles.newPasswordLabel}>Confirm Password</Text>
-          <Input placeholder="Enter"></Input>
-        </View>
-      </View>
-      <View style={styles.resetButton}>
-        <Button onPress={pressed} style={styles.resetBtn}>
-          Reset password
-        </Button>
-      </View>
-      <View style={styles.back}>
-        <Text style={styles.backText}>Back</Text>
-      </View>
-    </View>
   );
 };
+
 const styles = StyleSheet.create({
-  topHead: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center"
-  },
-  mainHeading: {
-    fontSize: 30,
-    fontWeight: "bold",
-    textAlign: "center"
-  },
   container: {
-    padding: 20,
+    flex: 1,
+    paddingHorizontal: 10,
     backgroundColor: "#FFF",
-    height: "100%"
+    paddingBottom: 20
   },
-  inputSection: {
-    paddingTop: 40
-  },
-  newPassword: {
-    display: "flex",
+  header: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center"
+    marginHorizontal: 30,
+    marginTop: 15,
+    marginBottom: 30
   },
-  passwordInput: {
-    marginTop: 50
+  back: { width: 11.25, height: 20, resizeMode: "contain", marginLeft: -15 },
+  heading: { fontSize: 16, color: "#000" },
+  mr10: {
+    marginLeft: 25,
+    marginBottom: 10
   },
-  newPasswordLabel: {
-    paddingLeft: 15,
-    paddingBottom: 7
-  },
-  confirmInput: {
-    paddingTop: 10
-  },
-  resetButton: {
-    paddingTop: 20,
-    paddingLeft: 30,
-    paddingRight: 30
-  },
-  back: {
-    display: "flex",
+  InputBox: { paddingHorizontal: 10, borderColor: "#C4C4C4", borderWidth: 1, marginHorizontal: 10, borderRadius: 10, marginBottom: 10, paddingVertical: 15 },
+  buttonBottom: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
     alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 30
+    marginBottom: 10
   },
-  backText: {
-    fontWeight: "600",
-    fontSize: 20
+  descriptionContainer: { paddingHorizontal: 10, marginBottom: 15, marginTop: 5 },
+  descriptionText: { fontSize: 16, fontWeight: "400", marginLeft: 10, marginVertical: 5 },
+  description: { fontSize: 12, marginVertical: 5, fontWeight: "500" },
+  chooseContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: 55,
+    borderColor: "#C4C4C4",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingLeft: 10,
+    paddingRight: 20,
+    marginHorizontal: 5,
+    marginBottom: 20
+  },
+  filterImg: {
+    height: 24,
+    width: 24,
+    resizeMode: "contain"
   }
 });
-
-export default ForgotPassword;
 
 const Button = (props) => {
   return (
@@ -107,21 +103,14 @@ const Button = (props) => {
         style={[
           btnStyles.button,
           {
-            backgroundColor: props.backgroundColor
-              ? props.backgroundColor
-              : "#000000",
+            backgroundColor: props.backgroundColor ? props.backgroundColor : "#000000",
             height: props.height ? props.height : 49,
             borderWidth: props.borderWidth ? props.borderWidth : 0,
             borderColor: props.borderColor ? props.borderColor : "#000000"
           }
         ]}
       >
-        <Text
-          style={[
-            btnStyles.text,
-            { color: props.color ? props.color : "#ffffff" }
-          ]}
-        >
+        <Text style={[btnStyles.text, { color: props.color ? props.color : "#ffffff" }]}>
           {props.children}
         </Text>
       </View>
@@ -134,48 +123,12 @@ const btnStyles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10
+    borderRadius: 10,
+    marginVertical: 10,
+    width: 307
   },
   text: {
-    fontWeight: "bold",
     fontSize: 15
   }
 });
-
-const Input = (props) => {
-  return (
-    <View>
-      <TextInput
-        style={inputStyles.input}
-        placeholder={props.placeholder}
-        value={props.value}
-        onChangeText={(num) => props.setValue(num)}
-        placeholderTextColor="#ddd"
-        editable={props.editable !== false}
-      />
-      {props.errorText
-        ? (
-        <Text style={inputStyles.error}>{props.errorText}</Text>
-          )
-        : null}
-    </View>
-  );
-};
-
-const inputStyles = StyleSheet.create({
-  input: {
-    backgroundColor: "#fff",
-    height: 53,
-    borderColor: "#C4C4C4",
-    color: "#000",
-    borderRadius: 10,
-    fontSize: 14,
-    borderWidth: 1,
-    paddingHorizontal: 15
-  },
-  error: {
-    fontSize: 13,
-    color: "#FA060D",
-    paddingTop: 8
-  }
-});
+export default DocumentsDetails;
