@@ -13,11 +13,20 @@ services:
       - "8000:${PORT}"
   postgres:
     environment:
-      POSTGRES_PASSWORD: <postgres_pwd>
+      POSTGRES_PASSWORD: ramesh3099
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment: 
+        PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+        PGADMIN_DEFAULT_PASSWORD: "admin123"
+    ports: 
+        - "16543:80"
+    depends_on: 
+        - postgres
   redis:
     ports:
       - "6379:6379"
