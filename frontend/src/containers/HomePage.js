@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { AppContext } from "../App";
 import anime from "animejs";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +28,7 @@ const HomePage = () => {
 
     const history = useHistory();
 
-    const location = useLocation();
-
-    const isLoggedIn = 0;
+    const { user } = useContext(AppContext);
 
     useEffect(() => {
         anime
@@ -40,7 +39,7 @@ const HomePage = () => {
                 targets: "#background",
                 opacity: 1,
                 easing: "linear",
-                duration: 2000,
+                duration: 2000
             })
             .add({
                 targets: "#logo",
@@ -53,11 +52,12 @@ const HomePage = () => {
                     targets: "#background",
                     opacity: 0.2,
                     easing: "linear",
-                    duration: 2000,
+                    duration: 2000
                 });
-                if (!isLoggedIn) {
-                    if (location.pathname === "/")
+                if (!user.active) {
+                    if (window.location.pathname === "/")
                         history.push("/login");
+
                     anime({
                         targets: "#logo",
                         top: "-12%",
@@ -72,7 +72,7 @@ const HomePage = () => {
                         targets: "#guide",
                         left: "7%",
                         easing: "easeOutQuint",
-                        duration: 2000,
+                        duration: 2000
                     });
                     anime({
                         targets: "#board",
@@ -80,12 +80,62 @@ const HomePage = () => {
                         easing: "easeOutQuint",
                         duration: 2000
                     });
+                    anime({
+                        targets: "#board2",
+                        left: "50%",
+                        easing: "easeOutQuint",
+                        duration: 2000
+                    });
                 }
                 else {
+                    if (window.location.pathname === "/reset-password")
+                        anime({
+                            targets: "#logo",
+                            top: "-12%",
+                            left: "-12%",
+                            scale: 0.45,
+                            translateX: ["-50%", "0%"],
+                            translateY: ["-50%", "0%"],
+                            easing: "easeOutQuint",
+                            duration: 2000
+                        });
+                    else if (window.location.pathname === "/home")
+                        anime({
+                            targets: "#logo",
+                            opacity: 0.6,
+                            easing: "easeInQuint",
+                            duration: 2000
+                        });
+                    else if (window.location.pathname === "/") {
+                        if (!user.access) {
+                            history.push("/home");
+                            anime({
+                                targets: "#logo",
+                                opacity: 0.6,
+                                easing: "easeInQuint",
+                                duration: 2000
+                            });
+                        }
+                        else {
+                            anime({
+                                targets: "#logo",
+                                top: "150%",
+                                easing: "easeInElastic",
+                                duration: 2000
+                            });
+                        }
+                    }
+
                     anime({
-                        targets: "#logo",
-                        top: "150%",
-                        easing: "easeInElastic",
+                        targets: "#guide",
+                        left: "7%",
+                        easing: "easeOutQuint",
+                        duration: 2000
+                    });
+                    anime({
+                        targets: "#board2",
+                        left: "50%",
+                        easing: "easeOutQuint",
                         duration: 2000
                     });
                 }

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { AppContext } from "../App";
 import CIButton from "../shared/CIButton";
 import CIInput from "../shared/CIInput";
 import CILabel from "../shared/CILabel";
@@ -12,8 +13,8 @@ const useStyles = makeStyles({
         position: "absolute",
         top: "3%",
         left: "110%",
-        height: "94vh",
         width: "30vw",
+        height: "94vh",
         padding: "20px",
         background: "url('/images/Board.png')",
         backgroundRepeat: "no-repeat",
@@ -27,6 +28,14 @@ const useStyles = makeStyles({
         width: "22vw",
         transform: "scaleX(-1)"
     },
+    guide2: {
+        position: "absolute",
+        top: "44%",
+        left: "52%",
+        height: "70vh",
+        width: "22vw",
+        transform: "scale(0)"
+    },
     header: {
         height: "11vh",
         marginTop: "9vh",
@@ -39,34 +48,65 @@ const useStyles = makeStyles({
     body: {
         position: "relative",
         height: "61vh",
-        marginLeft: "4.4vw",
+        marginLeft: "1.4vw",
         overflow: "hidden",
         textAlign: "center"
     },
     signInSection: {
-        position: "absolute",
-        marginLeft: "-105%",
         "& button": {
-            marginTop: "0.7vh"
+            marginTop: "1vh"
         },
         "& input": {
             marginTop: "0.7vh"
         },
         "& label": {
-            marginTop: "2.7vh",
             "&:nth-child(5)": {
-                marginTop: "5.3vh"
-            }
-        }
+                marginTop: "5.6vh"
+            },
+            marginTop: "2.7vh"
+        },
+        position: "absolute",
+        zIndex: 2,
+        marginLeft: "11.5%"
     },
     signUpSection: {
-        marginLeft: "105%",
         "& input": {
             marginBottom: "1vh"
         },
         "& button": {
             marginTop: "1vh"
-        }
+        },
+        zIndex: 2,
+        marginLeft: "105%"
+    },
+    resetSection: {
+        "& label": {
+            "&:first-child": {
+                fontSize: "4.5vh",
+                fontWeight: "bold",
+                letterSpacing: 1
+            },
+            "&:nth-child(2)": {
+                marginTop: "8vh",
+                marginBottom: "0.7vh"
+            },
+            width: "100%"
+        },
+        "& button": {
+            width: "45%"
+        },
+        "& div": {
+            width: "100vw"
+        },
+        "& input": {
+            marginBottom: "3vh"
+        },
+        alignContent: "baseline",
+        opacity: 0,
+        rotate: "-90deg",
+        marginTop: "-195%",
+        marginLeft: "-48%",
+        width: "105%"
     },
     age: {
         marginTop: "4px",
@@ -78,10 +118,10 @@ const useStyles = makeStyles({
     },
     footerText: {
         "& label": {
-            fontSize: "1.8vh",
+            fontSize: "2vh",
             marginLeft: "2px"
         },
-        fontSize: "1.8vh",
+        fontSize: "2vh",
         marginTop: "1.7vh"
     },
     button: {
@@ -114,11 +154,9 @@ const LoginBoard = () => {
 
     const history = useHistory();
 
-    const location = useLocation();
+    const [active, setActive] = useState(window.location.pathname === "/login");
 
-    const isAllowed = false;
-
-    const [active, setActive] = useState(location.pathname === "/login");
+    const { user, setUser } = useContext(AppContext);
 
     useEffect(() => {
         history.push(active ? "/login" : "/signup");
@@ -143,13 +181,13 @@ const LoginBoard = () => {
         });
         anime({
             targets: "#sign-in-section",
-            marginLeft: active ? "0%" : "-105%",
+            marginLeft: active ? "11.5%" : "-105%",
             easing: "linear",
             duration: 250
         });
         anime({
             targets: "#sign-up-section",
-            marginLeft: active ? "105%" : "0%",
+            marginLeft: active ? "105%" : "11.5%",
             easing: "linear",
             duration: 250
         });
@@ -159,12 +197,116 @@ const LoginBoard = () => {
         setActive(!active);
     }
 
+    const handleLink = () => {
+        anime({
+            targets: "#guide",
+            scaleX: [-1, 0],
+            scaleY: 0,
+            left: "30%",
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: "#guide2",
+            scale: [0, 1],
+            top: "0%",
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: "#board",
+            top: "16%",
+            left: "38%",
+            width: "27vw",
+            height: "97vh",
+            rotate: 90,
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: [`.${cls.header}`, `.${cls.signInSection}`, `.${cls.signUpSection}`],
+            opacity: 0,
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: `.${cls.body}`,
+            height: "80vh",
+            duration: 0
+        });
+        anime({
+            targets: [`.${cls.resetSection}`, `.${cls.signInSection}`, `.${cls.signUpSection}`],
+            zIndex: (_, i) => i ? 1 : 2,
+            duration: 0
+        });
+        anime({
+            targets: "#reset-section",
+            opacity: 1,
+            marginLeft: "64%",
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+    }
+
+    const handleCancel = () => {
+        anime({
+            targets: "#guide",
+            scaleX: -1,
+            scaleY: 1,
+            left: "7%",
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: "#guide2",
+            scale: 0,
+            top: "44%",
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: "#board",
+            top: "3%",
+            left: "63%",
+            width: "30vw",
+            height: "94vh",
+            rotate: 0,
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: [`.${cls.header}`, `.${cls.signInSection}`, `.${cls.signUpSection}`],
+            opacity: 1,
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+        anime({
+            targets: `.${cls.body}`,
+            height: "61vh",
+            duration: 0
+        });
+        anime({
+            targets: [`.${cls.resetSection}`, `.${cls.signInSection}`, `.${cls.signUpSection}`],
+            zIndex: (_, i) => i ? 2 : 1,
+            duration: 0
+        });
+        anime({
+            targets: "#reset-section",
+            opacity: 0,
+            marginLeft: "-48%",
+            easing: "easeOutQuint",
+            duration: 2000
+        });
+    }
+
     const handleSignIn = () => {
+        setUser({ active: true, access: false });
+
         anime({
             targets: "#guide",
             left: "-30%",
             easing: "easeInQuint",
-            duration: 2000,
+            duration: 2000
         });
         anime({
             targets: "#board",
@@ -172,7 +314,9 @@ const LoginBoard = () => {
             easing: "easeInQuint",
             duration: 2000
         });
-        if (!isAllowed) {
+
+        if (!user.access) {
+            history.push("/home");
             anime({
                 targets: "#logo",
                 opacity: 0.6,
@@ -190,13 +334,14 @@ const LoginBoard = () => {
                 targets: "#logo",
                 left: "-50%",
                 easing: "easeInQuint",
-                duration: 2000,
+                duration: 2000
             });
         }
     }
 
     return <Grid>
         <img className={cls.guide} id="guide" src="/avatars/Avatar_1.png" />
+        <img className={cls.guide2} id="guide2" src="/avatars/Avatar_2.png" />
         <Grid className={cls.board} container id="board">
             <Grid className={cls.header} container item xs={9} alignItems="center" spacing={4} onClick={handleSwitch}>
                 <Grid className={cls.tab} id="active-tab" />
@@ -217,7 +362,7 @@ const LoginBoard = () => {
                     <CIInput />
                     <CILabel>Password</CILabel>
                     <CIInput type="password" />
-                    <CILink>Forgot Password?</CILink>
+                    <CILink onClick={handleLink}>Forgot Password?</CILink>
                     <CIButton onClick={handleSignIn}>Sign In</CIButton>
                 </Grid>
                 <Grid className={cls.signUpSection} id="sign-up-section">
@@ -231,11 +376,20 @@ const LoginBoard = () => {
                             <CIInput className={cls.age} placeholder="Age" xs />
                         </Grid>
                     </Grid>
-                    <CIButton>Sign Up</CIButton>
+                    <CIButton onClick={handleSignIn}>Sign Up</CIButton>
                     <CILabel className={cls.footerText}>
                         By Signing Up, you are agreeing to our
                         <CILink>Terms & Conditions</CILink>
                     </CILabel>
+                </Grid>
+                <Grid className={cls.resetSection} container id="reset-section" justifyContent="center">
+                    <CILabel>Forgot Password?</CILabel>
+                    <CILabel>Email</CILabel>
+                    <CIInput />
+                    <Grid container spacing={1} justifyContent="space-between">
+                        <CIButton>Send</CIButton>
+                        <CIButton onClick={handleCancel}>Cancel</CIButton>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

@@ -22,7 +22,7 @@ const useStyles = (size) => makeStyles((theme) => ({
 }));
 
 const CIInput = (props) => {
-    const size = props.xs ? "xs" : props.sm ? "sm" : "md";
+    const size = props.disabled ? "disabled" : props.xs ? "xs" : props.sm ? "sm" : "md";
     const others = {
         xs: undefined,
         sm: undefined
