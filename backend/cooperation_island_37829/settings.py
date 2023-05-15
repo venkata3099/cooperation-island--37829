@@ -62,6 +62,7 @@ SECURE_SSL_REDIRECT = env.bool("SECURE_REDIRECT", default=False)
 # Application definition
 
 INSTALLED_APPS = [
+    'cooperation_island_37829.apps.cooperation_island_37829Config',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
