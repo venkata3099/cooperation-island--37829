@@ -6,8 +6,8 @@ export const showLoginBoard = () => {
         top: "-12%",
         left: "-12%",
         scale: 0.45,
-        translateX: ["-50%", "0%"],
-        translateY: ["-50%", "0%"],
+        translateX: "0%",
+        translateY: "0%",
         easing: "easeOutQuint",
         duration: 2000
     });

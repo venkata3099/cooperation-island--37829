@@ -65,11 +65,11 @@ const HomePage = () => {
                 else {
                     if (window.location.pathname === "/reset-password")
                         showResetPassword();
-                    else if (window.location.pathname === "/home")
+                    else if (window.location.pathname === "/access")
                         showLandingPage();
                     else if (window.location.pathname === "/") {
                         if (!user.access) {
-                            history.push("/home");
+                            history.push("/access");
                             showLandingPage();
                         }
                         else {

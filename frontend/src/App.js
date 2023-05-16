@@ -28,7 +28,7 @@ const App = () => {
       if (user.access)
         return;
       else
-        return <Route path="/home" component={LandingPage} />
+        return <Route path="/access" component={LandingPage} />
     }
     else {
       return <Switch>
