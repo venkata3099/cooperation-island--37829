@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { AppContext } from "../App";
+import { showReadingPane } from "../libs/animations";
 import CIButton from "../shared/CIButton";
 import CIInput from "../shared/CIInput";
 import CILabel from "../shared/CILabel";
@@ -91,6 +92,7 @@ const useStyles = makeStyles({
         },
         position: "absolute",
         zIndex: 2,
+        marginTop: "2vh",
         marginLeft: "12.5%"
     },
     signUpSection: {
@@ -103,6 +105,9 @@ const useStyles = makeStyles({
             marginBottom: "1vh"
         },
         "& label": {
+            "&:nth-child(6)": {
+                marginRight: "0.3vw"
+            },
             marginLeft: "3%"
         },
         zIndex: 2,
@@ -154,12 +159,13 @@ const useStyles = makeStyles({
         width: "9.1vw"
     },
     footerText: {
-        "& label": {
-            fontSize: "2vh",
-            marginLeft: "01.6vw"
-        },
         fontSize: "2vh",
-        marginTop: "1.7vh"
+        marginTop: "1.7vh",
+        marginBottom: "-1.33vh"
+    },
+    link: {
+        display: "inline",
+        fontSize: "2vh"
     }
 });
 
@@ -313,7 +319,7 @@ const LoginBoard = () => {
         });
     }
 
-    const handleSignIn = () => {
+    const handleSign = () => {
         anime
             .timeline()
             .add({
@@ -356,6 +362,27 @@ const LoginBoard = () => {
             });
     }
 
+    const handleClick = (path) => () => {
+        anime
+            .timeline()
+            .add({
+                targets: "#guide",
+                left: "-30%",
+                easing: "easeInQuint",
+                duration: 2000
+            })
+            .add({
+                targets: "#board",
+                left: "110%",
+                easing: "easeInQuint",
+                duration: 2000
+            }, "-=2000")
+            .finished.then(() => {
+                history.push(path);
+                showReadingPane();
+            });
+    }
+
     return <div>
         <img className={cls.guide} id="guide" src="/avatars/Avatar_1.png" />
         <img className={cls.guide2} id="guide2" src="/avatars/Avatar_2.png" />
@@ -376,7 +403,7 @@ const LoginBoard = () => {
                     <CILabel>Password</CILabel>
                     <CIInput type="password" />
                     <CILink onClick={handleLink}>Forgot Password?</CILink>
-                    <CIButton onClick={handleSignIn}>Sign In</CIButton>
+                    <CIButton onClick={handleSign}>Sign In</CIButton>
                 </div>
                 <div className={cls.signUpSection}>
                     <CIInput placeholder="Username" />
@@ -385,11 +412,12 @@ const LoginBoard = () => {
                         <CIInput className={cls.email} placeholder="Email" sm />
                         <CIInput className={cls.age} placeholder="Age" xs />
                     </div>
-                    <CIButton onClick={handleSignIn}>Sign Up</CIButton>
+                    <CIButton onClick={handleSign}>Sign Up</CIButton>
                     <CILabel className={cls.footerText}>
                         By Signing Up, you are agreeing to our
-                        <CILink>Terms & Conditions</CILink>
                     </CILabel>
+                    <CILink className={cls.link} onClick={handleClick("/terms-conditions")}>Terms & Conditions</CILink> |
+                    <CILink className={cls.link} onClick={handleClick("/privacy")}>Privacy Policy</CILink>
                 </div>
                 <div className={cls.resetSection}>
                     <CILabel>Forgot Password?</CILabel>

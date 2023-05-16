@@ -16,10 +16,10 @@ const useStyles = makeStyles({
     },
     board: {
         position: "absolute",
-        top: "-4%",
+        top: "-1%",
         left: "110%",
-        width: "30vw",
         height: "100vh",
+        width: "30vw",
         rotate: "90deg",
         background: "url('/images/Board.png')",
         backgroundRepeat: "no-repeat",

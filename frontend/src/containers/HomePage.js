@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { showLandingPage, showLoginBoard, showResetPassword } from "../libs/animations";
+import { showLandingPage, showLoginBoard, showReadingPane, showResetPassword } from "../libs/animations";
 import { AppContext } from "../App";
 import anime from "animejs";
 
@@ -61,6 +61,7 @@ const HomePage = () => {
 
                     showLoginBoard();
                     showResetPassword();
+                    showReadingPane();
                 }
                 else {
                     if (window.location.pathname === "/reset-password")

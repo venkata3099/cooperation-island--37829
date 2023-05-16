@@ -50,6 +50,31 @@ export const showResetPassword = () => {
     });
 }
 
+export const showReadingPane = () => {
+    anime({
+        targets: "#logo",
+        top: "-12%",
+        left: "-12%",
+        scale: 0.45,
+        translateX: "0%",
+        translateY: "0%",
+        easing: "easeOutQuint",
+        duration: 2000
+    });
+    anime({
+        targets: "#guide",
+        left: "7%",
+        easing: "easeOutQuint",
+        duration: 2000
+    });
+    anime({
+        targets: "#board3",
+        left: "42%",
+        easing: "easeOutQuint",
+        duration: 2000
+    });
+}
+
 export const showLandingPage = () => {
     anime({
         targets: "#logo",
