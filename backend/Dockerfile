@@ -4,10 +4,7 @@ FROM crowdbotics/cb-django:3.8-slim-buster AS build
 COPY ./Pipfile ./Pipfile.lock /
 COPY ./modules/ /modules/
 
-
-
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
-
 
 FROM crowdbotics/cb-django:3.8-slim-buster AS release
 ARG SECRET_KEY
