@@ -1,0 +1,22 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "plugins": ["@typescript-eslint"],
+  "root": true,
+  "rules": {
+    "quotes": "warn",
+    "no-console": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn",
+    "react-hooks/exhaustive-deps": "off"
+  }
+}
