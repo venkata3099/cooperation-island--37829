@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-
+import uuid
 
 class User(AbstractUser):
     # WARNING!
@@ -21,6 +21,14 @@ class User(AbstractUser):
     # First Name and Last Name do not cover name patterns
     # around the globe.
     name = models.CharField(_("Name of User"), blank=True, null=True, max_length=255)
+    identifier = models.UUIDField( default=uuid.uuid4, editable=False)
+    email = models.EmailField()
+    age = models.PositiveIntegerField(default=0, blank=True, null=True)
+    avatar = models.PositiveIntegerField(default=0)
+    consent_status = models.BooleanField(default=False)
+
+    REQUIRED_FIELDS = ['email', 'age']
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})
+
